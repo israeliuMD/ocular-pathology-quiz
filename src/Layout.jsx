@@ -1,3 +1,8 @@
+export default function Layout() {
+  console.log("Layout component rendering");
+  // The rest of your existing code stays the same
+}
+
 import React from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { BookOpen, Home, ListChecks, BarChart, Menu, X } from "lucide-react";
