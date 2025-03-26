@@ -1,11 +1,3 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import Layout from './Layout';
-import Home from './pages/Home';
-import Quiz from './pages/Quiz';
-import Study from './pages/Study';
-import Progress from './pages/Progress';
-
 function App() {
   console.log("App component rendering");
   // The rest of your existing code stays the same
@@ -15,6 +7,15 @@ function App() {
     </Routes>
   );
 }
+
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Layout from './Layout';
+import Home from './pages/Home';
+import Quiz from './pages/Quiz';
+import Study from './pages/Study';
+import Progress from './pages/Progress';
+
 
 function App() {
   return (
