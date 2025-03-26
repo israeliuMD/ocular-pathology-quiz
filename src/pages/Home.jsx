@@ -1,3 +1,7 @@
+export default function Home() {
+  console.log("Home component rendering");
+  // The rest of your existing code stays the same
+}
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
