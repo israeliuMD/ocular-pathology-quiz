@@ -1,3 +1,21 @@
+export default function Quiz() {
+  console.log("Quiz component rendering");
+  
+  // Add this to your loadQuestions function
+  async function loadQuestions() {
+    console.log("loadQuestions called - trying to load questions");
+    setIsLoading(true);
+    try {
+      // Your existing code
+      console.log("Successfully loaded questions:", chapterQuestions);
+    } catch (error) {
+      console.error("Error in loadQuestions:", error);
+    }
+    setIsLoading(false);
+  }
+  
+  // The rest of your existing code stays the same
+}
 import React, { useState, useEffect } from "react";
 import { Question } from "@/entities/Question";
 import { User } from "@/entities/User";
