@@ -3,34 +3,59 @@
  */
 class User {
   /**
+   * Export the User class
+   */
+  /**
+   * Get default user data structure
+   * @returns {Object}
+
+export { User }; - Default user data
+   */
+  static getDefaultUserData() {
+    return {
+      id: 'user_' + Date.now(),
+      quiz_scores: [],
+      categories_progress: {
+        developmental_anomaly: { correct: 0, total: 0 },
+        inflammation: { correct: 0, total: 0 },
+        dystrophy_and_degeneration: { correct: 0, total: 0 },
+        neoplasia: { correct: 0, total: 0 }
+      },
+      chapter_progress: {
+        "1": { correct: 0, total: 0 }
+      },
+      total_questions_attempted: 0,
+      total_correct: 0,
+      created_at: new Date().toISOString()
+    };
+  }
+
+  /**
    * Get the current user data
    * @returns {Promise<Object>} - User data object
    */
   static async me() {
     try {
+      console.log("Fetching user data");
       // In a real application, this would be an API call
       // For now, we'll use localStorage
       const userData = localStorage.getItem('user_data');
       
       if (userData) {
-        return JSON.parse(userData);
+        try {
+          const parsed = JSON.parse(userData);
+          console.log("Found existing user data");
+          return parsed;
+        } catch (parseError) {
+          console.error('Error parsing user data:', parseError);
+          console.log("Creating new user data due to parse error");
+          return this.getDefaultUserData();
+        }
       }
       
       // If no user data exists, create a new user profile
-      const newUser = {
-        id: 'user_' + Date.now(),
-        quiz_scores: [],
-        categories_progress: {
-          developmental_anomaly: { correct: 0, total: 0 },
-          inflammation: { correct: 0, total: 0 },
-          dystrophy_and_degeneration: { correct: 0, total: 0 },
-          neoplasia: { correct: 0, total: 0 }
-        },
-        chapter_progress: {},
-        total_questions_attempted: 0,
-        total_correct: 0,
-        created_at: new Date().toISOString()
-      };
+      console.log("No user data found, creating new user");
+      const newUser = this.getDefaultUserData();
       
       // Save the new user profile
       localStorage.setItem('user_data', JSON.stringify(newUser));
@@ -38,7 +63,8 @@ class User {
       return newUser;
     } catch (error) {
       console.error('Error fetching user data:', error);
-      return null;
+      console.log("Returning default user data due to error");
+      return this.getDefaultUserData();
     }
   }
   
@@ -53,6 +79,8 @@ class User {
       
       if (!user) return false;
       
+      console.log("Saving quiz results:", results);
+      
       // Add the new quiz score
       user.quiz_scores.push({
         date: new Date().toISOString(),
@@ -63,29 +91,37 @@ class User {
       });
       
       // Update category progress
-      results.categoryResults.forEach(cat => {
-        if (!user.categories_progress[cat.category]) {
-          user.categories_progress[cat.category] = { correct: 0, total: 0 };
-        }
-        
-        user.categories_progress[cat.category].correct += cat.correct;
-        user.categories_progress[cat.category].total += cat.total;
-      });
+      if (results.categoryResults && Array.isArray(results.categoryResults)) {
+        results.categoryResults.forEach(cat => {
+          if (!cat || !cat.category) return;
+          
+          if (!user.categories_progress[cat.category]) {
+            user.categories_progress[cat.category] = { correct: 0, total: 0 };
+          }
+          
+          user.categories_progress[cat.category].correct += cat.correct || 0;
+          user.categories_progress[cat.category].total += cat.total || 0;
+        });
+      }
       
       // Update chapter progress
       const chapter = results.chapter || '1';
+      if (!user.chapter_progress) {
+        user.chapter_progress = {};
+      }
       if (!user.chapter_progress[chapter]) {
         user.chapter_progress[chapter] = { correct: 0, total: 0 };
       }
-      user.chapter_progress[chapter].correct += results.correct;
-      user.chapter_progress[chapter].total += results.total;
+      user.chapter_progress[chapter].correct += results.correct || 0;
+      user.chapter_progress[chapter].total += results.total || 0;
       
       // Update totals
-      user.total_questions_attempted += results.total;
-      user.total_correct += results.correct;
+      user.total_questions_attempted += results.total || 0;
+      user.total_correct += results.correct || 0;
       
       // Save updated user data
       localStorage.setItem('user_data', JSON.stringify(user));
+      console.log("Quiz results saved successfully");
       
       return true;
     } catch (error) {
@@ -172,5 +208,3 @@ class User {
     }
   }
 }
-
-export { User };
