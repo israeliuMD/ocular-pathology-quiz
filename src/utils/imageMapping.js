@@ -1,41 +1,51 @@
 // src/utils/imageMapping.js
 
 /**
- * Map your actual image filenames to the expected ones
+ * Map figure numbers to actual image filenames
  * 
- * Instructions:
- * 1. Replace the values with your actual filenames
- * 2. Keep the keys as they are (they match the figure numbers)
+ * This mapping connects the figure numbers referenced in the questions
+ * to the actual image filenames in your project
  */
 export const imageFilenameMap = {
-  // For Chapter 1
-  "figure_1_1.jpg": "your-actual-filename-for-1-1.jpg",
-  "figure_1_2.jpg": "your-actual-filename-for-1-2.jpg",
-  "figure_1_3.jpg": "your-actual-filename-for-1-3.jpg",
-  "figure_1_4.jpg": "your-actual-filename-for-1-4.jpg",
-  "figure_1_5.jpg": "your-actual-filename-for-1-5.jpg",
-  "figure_1_6.jpg": "your-actual-filename-for-1-6.jpg",
+  // Chapter 1 Figures
+  "figure_1_1.jpg": "04-Ophthalmic Pathology and Intraocular Tumors_Page_028_Image_0001",
   
-  // Add more mappings here as needed
+  // Figure 1-2 has parts A and B
+  "figure_1_2.jpg": "04-Ophthalmic Pathology and Intraocular Tumors_Page_028_Image_0002",
+  "figure_1_2_b.jpg": "04-Ophthalmic Pathology and Intraocular Tumors_Page_028_Image_0003",
+  
+  // Additional figures would be mapped here
+  "figure_1_3.jpg": "04-Ophthalmic Pathology and Intraocular Tumors_Page_029_Image_0001", // Adjust this filename
+  "figure_1_4.jpg": "04-Ophthalmic Pathology and Intraocular Tumors_Page_030_Image_0001", // Adjust this filename
+  "figure_1_5.jpg": "04-Ophthalmic Pathology and Intraocular Tumors_Page_030_Image_0002", // Adjust this filename
+  "figure_1_6.jpg": "04-Ophthalmic Pathology and Intraocular Tumors_Page_031_Image_0001", // Adjust this filename
 };
 
 /**
  * Get the actual filename for a given figure number
+ * 
+ * @param {string} figureNumber - The figure number (e.g., "1.1")
+ * @returns {string} - The actual filename
  */
 export function getActualImageFilename(figureNumber) {
+  // Convert figure number format from "1.1" to "figure_1_1.jpg"
   const standardizedName = `figure_${figureNumber.replace(/\./g, '_')}.jpg`;
-  return imageFilenameMap[standardizedName] || standardizedName;
+  
+  // Get the actual filename from the map, or return the standardized name
+  // if no mapping exists (as a fallback)
+  const actualFilename = imageFilenameMap[standardizedName];
+  
+  // If we found a mapping, return the actual filename with .jpg extension
+  // Otherwise return the standardized name as a fallback
+  return actualFilename ? `${actualFilename}.jpg` : standardizedName;
 }
 
 /**
- * Instructions for implementing this:
+ * FOR IMPLEMENTATION:
  * 
- * 1. Place all your images in the folder:
- *    data/chapters/chapter1/images/
- * 
- * 2. Fill in the imageFilenameMap above with mappings:
- *    - Left side: the standard name (e.g., "figure_1_1.jpg")
- *    - Right side: your actual filename
- * 
- * 3. Import and use this in Question.js by replacing the getImageUrl method
+ * 1. Replace the example filenames above with your actual filenames
+ * 2. Make sure all figures referenced in questions.json have a corresponding entry
+ * 3. For multi-part figures (like A, B, C), decide which part to use for the quiz
+ *    or create separate entries if you want to reference specific parts
+ * 4. Test the mapping by checking if Question.getImageUrl() returns the correct paths
  */
