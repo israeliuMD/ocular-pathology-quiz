@@ -26,3 +26,16 @@ export function getActualImageFilename(figureNumber) {
   const standardizedName = `figure_${figureNumber.replace(/\./g, '_')}.jpg`;
   return imageFilenameMap[standardizedName] || standardizedName;
 }
+
+/**
+ * Instructions for implementing this:
+ * 
+ * 1. Place all your images in the folder:
+ *    data/chapters/chapter1/images/
+ * 
+ * 2. Fill in the imageFilenameMap above with mappings:
+ *    - Left side: the standard name (e.g., "figure_1_1.jpg")
+ *    - Right side: your actual filename
+ * 
+ * 3. Import and use this in Question.js by replacing the getImageUrl method
+ */
