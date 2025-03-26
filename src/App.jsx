@@ -7,6 +7,16 @@ import Study from './pages/Study';
 import Progress from './pages/Progress';
 
 function App() {
+  console.log("App component rendering");
+  // The rest of your existing code stays the same
+  return (
+    <Routes>
+      // ... existing routes
+    </Routes>
+  );
+}
+
+function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
